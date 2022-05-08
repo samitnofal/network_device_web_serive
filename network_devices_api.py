@@ -101,7 +101,7 @@ def add_or_update_network_device(key, data):
     returnCode = 200 if networkDevicesDB.get(key) else 201
     
     networkDevicesDB.set(key, data)
-    return networkDevicesDB.get(key), returnCode
+    return jsonify({key:networkDevicesDB.get(key)}), returnCode
 
 
 """
@@ -115,7 +115,7 @@ def get_network_devices_all():
     res = []
     for k in keys:
         res.append({k:networkDevicesDB.get(k)})
-    return jsonify(res)
+    return jsonify(res), 200
 
 """
 get_network_device
@@ -131,7 +131,7 @@ def get_network_device(fqdn):
 
     db_value = networkDevicesDB.get(key)
     if db_value != False:
-        return db_value, 200
+        return jsonify({key:db_value}), 200
     return {},404
 
 """
@@ -187,5 +187,5 @@ def delete_network_device(fqdn):
     db_value = networkDevicesDB.get(key)
     if db_value != False:
         networkDevicesDB.rem(key)
-        return db_value, 200
+        return jsonify({key:db_value}), 200
     return {},200
